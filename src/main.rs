@@ -31,7 +31,7 @@ fn get_wifi_level() -> i32 {
     let Output { stdout ,..} = awk.wait_with_output().unwrap();
     let result = String::from_utf8_lossy(&stdout);
 
-    let cleaned_result= result.trim_end_matches('.');
+    let cleaned_result= result.trim_end_matches(".\n");
 
     println!("{}", cleaned_result);
 
