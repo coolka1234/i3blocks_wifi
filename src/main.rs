@@ -2,32 +2,15 @@ use std::process::{Command, Output, Stdio};
 
 fn main(){
     let wifi_level = get_wifi_level();
-    let mut wifi_level = match wifi_level {
-        0..=30 => WifiLevel::None,
-        31..=60 => WifiLevel::Low,
-        61..=80 => WifiLevel::Medium,
-        81..=100 => WifiLevel::High,
-        _ => WifiLevel::None,
+    let wifi_string_level = match wifi_level {
+        0..=30 => "None",
+        31..=53 => "Low",
+        54..=70 => "Medium",
+        71..=100 => "High",
+        _ => "None",
     };
     const WIFI_SYMBOL: &str= "📶";
-    println!("Wifi level: {}", WIFI_SYMBOL.to_owned()+&wifi_level.to_string());
-    // simple_test();
-}
-
-// fn simple_test() {
-//     let output = Command::new("ls")
-//         .output()
-//         .expect("failed to execute process");
-
-//     let output = String::from_utf8_lossy(&output.stdout);
-//     println!("{}", output);
-// }
-
-enum WifiLevel {
-    None,
-    Low,
-    Medium,
-    High,
+    println!("Wifi level: {}", WIFI_SYMBOL.to_owned()+&wifi_string_level);
 }
 
 fn get_wifi_level() -> i32 {
