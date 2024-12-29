@@ -2,7 +2,15 @@ use std::process::{Command, Output, Stdio};
 
 fn main(){
     let wifi_level = get_wifi_level();
-    println!("Wifi level: {}", wifi_level);
+    let mut wifi_level = match wifi_level {
+        0..=30 => WifiLevel::None,
+        31..=60 => WifiLevel::Low,
+        61..=80 => WifiLevel::Medium,
+        81..=100 => WifiLevel::High,
+        _ => WifiLevel::None,
+    };
+    const WIFI_SYMBOL: &str= "📶";
+    println!("Wifi level: {}", WIFI_SYMBOL.to_owned()+&wifi_level.to_string());
     // simple_test();
 }
 
@@ -43,8 +51,6 @@ fn get_wifi_level() -> i32 {
     if cleaned_result.is_empty() {
         return -1;
     }
-
-    println!("{}", cleaned_result);
 
     let output = cleaned_result.parse::<i32>().unwrap();
     output
