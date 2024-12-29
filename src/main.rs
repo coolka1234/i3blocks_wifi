@@ -15,6 +15,13 @@ fn main(){
 //     println!("{}", output);
 // }
 
+enum WifiLevel {
+    None,
+    Low,
+    Medium,
+    High,
+}
+
 fn get_wifi_level() -> i32 {
     let output = Command::new("/usr/bin/cat")
         .arg("/proc/net/wireless")
@@ -29,9 +36,13 @@ fn get_wifi_level() -> i32 {
         .spawn()
         .unwrap();
     let Output { stdout ,..} = awk.wait_with_output().unwrap();
+    //this may be empty btw if there is now wifi
     let result = String::from_utf8_lossy(&stdout);
 
     let cleaned_result= result.trim_end_matches(".\n");
+    if cleaned_result.is_empty() {
+        return -1;
+    }
 
     println!("{}", cleaned_result);
 
